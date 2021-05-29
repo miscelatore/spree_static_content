@@ -3,50 +3,61 @@
 <% end %>
 
 <%= form_for [:admin, resource] do |f| %>
+
+<%= render partial: 'spree/admin/shared/error_messages', locals: { target: @page } %>
+
+<div class="card mb-4">
+  <div class="card-header">
+    <h1 class="card-title mb-0 h5">
+      <%= Spree.t(:basic_information) %>
+    </h1>
+  </div>
+  <div class="card-body">
+
   <div class="row" data-hook="admin_page_form_fields">
     <div class="col-lg-6" data-hook="admin_page_form_left">
-      <div class="form-group">
-        <%= f.label :title %> <span class="required">*</span>
-        <%= f.text_field :title, class: 'form-control' %>
+      <%= f.field_container :title, class: ['form-group'] do %>
+        <%= f.label :title, raw(Spree.t(:title) + required_span_tag) %>
+        <%= f.text_field :title, class: 'form-control', required: true %>
         <%= f.error_message_on :title %>
-      </div>
-
-      <div class="form-group">
-        <%= f.label :slug %> <span class="required">*</span>
-        <%= f.text_field :slug, class: 'form-control' %>
-        <%= f.error_message_on :slug %>
-      </div>
-
-      <div class="form-group">
-        <%= f.label :body %> <span class="required">*</span>
-        <%= f.text_area :body, rows: 12, class: 'form-control' %>
+      <% end %>
+      
+      <%= f.field_container :body, class: ['form-group'] do %>
+        <%= f.label :body, raw(Spree.t(:body) + required_span_tag) %>
+        <%= f.text_area :body, rows: 12, class: 'form-control', required: true %>
         <%= f.error_message_on :body %>
-      </div>
+      <% end %>
     </div>
 
     <div class="col-lg-6" data-hook="admin_page_form_right">
-      <div class="form-group">
-        <%= f.label :layout %>
+      <!--
+      <%= f.field_container :layout, class: ['form-group'] do %>
+        <%= f.label :layout, Spree.t(:layout) %>
         <%= f.text_field :layout, class: 'form-control' %>
-      </div>
+        <%= f.error_message_on :layout %>
+      <% end %>
+      -->  
 
-      <div class="form-group">
-        <%= f.label :foreign_link %>
+      <%= f.field_container :foreign_link, class: ['form-group'] do %>
+        <%= f.label :foreign_link, Spree.t(:foreign_link) %>
         <%= f.text_field :foreign_link, class: 'form-control' %>
-      </div>
+        <%= f.error_message_on :foreign_link %>
+      <% end %>
 
-      <div class="form-group">
-        <%= f.label :position %>
+      <%= f.field_container :position, class: ['form-group'] do %>
+        <%= f.label :position, Spree.t(:position) %>
         <%= f.number_field :position, min: 0, class: 'form-control' %>
-      </div>
-
+        <%= f.error_message_on :position %>
+      <% end %>
+      
+      <!--
       <div class="checkbox form-check">
         <%= f.label :show_in_sidebar, { class: 'form-check-label' } do %>
           <%= f.check_box :show_in_sidebar, { class: 'form-check-input' } %>
           <%= Spree::Page.human_attribute_name(:show_in_sidebar) %>
         <% end %>
-      </div>
-
+      </div>  
+      -->  
       <div class="checkbox form-check">
         <%= f.label :show_in_header, { class: 'form-check-label' } do %>
           <%= f.check_box :show_in_header, { class: 'form-check-input' } %>
@@ -67,16 +78,16 @@
           <%= Spree::Page.human_attribute_name(:visible) %>
         <% end %>
       </div>
-
+      <!--
       <div class="checkbox form-check">
         <%= f.label :render_layout_as_partial, { class: 'form-check-label' } do %>
           <%= f.check_box :render_layout_as_partial, { class: 'form-check-input' } %>
           <%= Spree::Page.human_attribute_name(:render_layout_as_partial) %>
         <% end %>
       </div>
-
+      -->
       <div class="form-group mt-3">
-        <%= f.label :stores, plural_resource_name(Spree::Store) %>
+        <%= f.label :stores, Spree.t(:stores, resource: plural_resource_name(Spree::Store)) %>
         <% Spree::Store.all.each do |store| %>
           <div class="checkbox form-check">
             <%= f.label store.name.downcase.to_sym, { class: 'form-check-label' } do %>
@@ -89,27 +100,47 @@
     </div>
   </div>
 
+  </div>
+</div>  
+
+<div class="card mb-4">
+  <div class="card-header">
+    <h1 class="card-title mb-0 h5">
+      <%= Spree.t(:seo) %>
+    </h1>
+  </div>
+  <div class="card-body">
+
   <div class="row" data-hook="admin_page_form_meta">
     <div class="col-lg-12">
-      <div class="form-group">
-        <%= f.label :meta_title %>
+      <%= f.field_container :slug, class: ['form-group'] do %>
+        <%= f.label :slug, raw(Spree.t(:slug) + required_span_tag) %>
+        <%= f.text_field :slug, class: 'form-control', required: true %>
+        <%= f.error_message_on :slug %>
+      <% end %>
+      
+      <%= f.field_container :meta_title, class: ['form-group'] do %>
+        <%= f.label :meta_title, Spree.t(:seo_title) %>
         <%= f.text_field :meta_title, class: 'form-control' %>
         <%= f.error_message_on :meta_title %>
-      </div>
+      <% end %>
 
-      <div class="form-group">
-        <%= f.label :meta_keywords %>
-        <%= f.text_field :meta_keywords, class: 'form-control' %>
-        <%= f.error_message_on :meta_keywords %>
-      </div>
-
-      <div class="form-group">
-        <%= f.label :meta_description %>
+      <%= f.field_container :meta_description, class: ['form-group'] do %>
+        <%= f.label :meta_description, Spree.t(:meta_description) %>
         <%= f.text_field :meta_description, class: 'form-control' %>
         <%= f.error_message_on :meta_description %>
-      </div>
+      <% end %>
+
+      <%= f.field_container :meta_keywords, class: ['form-group'] do %>
+        <%= f.label :meta_keywords, Spree.t(:meta_keywords) %>
+        <%= f.text_field :meta_keywords, class: 'form-control' %>
+        <%= f.error_message_on :meta_keywords %>
+      <% end %>
     </div>
   </div>
+
+  </div>
+</div>  
 
   <div class="row" data-hook="admin_page_form_additional_fields">
     <div class="col-lg-12"></div>
